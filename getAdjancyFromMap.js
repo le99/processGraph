@@ -10,15 +10,15 @@ const stream = require('stream');
 
 var pass = new stream.PassThrough({objectMode: true});
 
-// const IN_FILE = './data/in/XMLs/map.xml';
-// const OUT_FILE = './data/out/XMLs/map.xml';
+const IN_FILE = './data/in/XMLs/map.xml';
+const OUT_FILE = './data/out/XMLs/mapWays.xml';
 
-const IN_FILE = './data/exampleMap.xml';
-const OUT_FILE = './data/out/exampleMap.json';
+// const IN_FILE = './data/exampleMap.xml';
+// const OUT_FILE = './data/out/exampleMap.json';
 
-const bar1 = new _cliProgress.Bar({}, _cliProgress.Presets.shades_classic);
-bar1.start(20*000*000, 0);
 var progress = 0;
+
+var t0 = new Date().getTime();
 
 
 var file = fs.createReadStream(IN_FILE);
@@ -55,7 +55,9 @@ pass
       // console.log( data);
       cb(null, data);   //render it nicely
       progress++;
-      bar1.update(progress);
+      if(progress % 10000 === 0){
+        console.log(progress);
+      }
     }))
   .pipe(JSONStream.stringify())
   .pipe(out)
@@ -63,5 +65,5 @@ pass
     console.log(err);
   })
   .on('finish', function(){
-    bar1.stop();
+    console.log('time:' + ((new Date().getTime() - t0)/1000));
   });
