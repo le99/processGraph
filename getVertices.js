@@ -1,17 +1,15 @@
 const _ = require('underscore');
-const _cliProgress = require('cli-progress');
 const fs = require('fs');
 const es = require('event-stream');
 const JSONStream = require('JSONStream');
 const sax = require("sax");
-const XmlStream = require('xml-stream');
 
 const stream = require('stream');
 
 var pass = new stream.PassThrough({objectMode: true});
 
 const IN_FILE = './data/in/XMLs/map.xml';
-const OUT_FILE = './data/out/XMLs/mapVertices.json';
+const OUT_FILE = './data/s1/mapVertices.json';
 
 // const IN_FILE = './data/in/XMLs/Central-WashingtonDC-OpenStreetMap.xml';
 // const OUT_FILE = './data/out/XMLs/CentralMapVertices.json';
@@ -25,7 +23,7 @@ var t0 = new Date().getTime();
 var file = fs.createReadStream(IN_FILE);
 var out = fs.createWriteStream(OUT_FILE);
 
-var saxStream = sax.createStream(true, {})
+var saxStream = sax.createStream(true, {});
 
 var firstLine = false;
 var openNode = false;
