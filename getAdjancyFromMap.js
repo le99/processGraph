@@ -1,5 +1,4 @@
 const _ = require('underscore');
-const _cliProgress = require('cli-progress');
 const fs = require('fs');
 const es = require('event-stream');
 const JSONStream = require('JSONStream');
