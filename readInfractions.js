@@ -4,11 +4,11 @@ const es = require('event-stream');
 const JSONStream = require('JSONStream');
 const parse = require('csv-parse')
 
-// const IN_FILE = './data/infractions.csv';
-// const OUT_FILE = './data/out/infractions.json';
+const IN_FILE = './data/infractions.csv';
+const OUT_FILE = './data/out/infractions.json';
 
-const IN_FILE = './data/in/Datos Proyecto 3/Abril_wgs84.csv';
-const OUT_FILE = './data/s1/Abril_wgs84.json';
+// const IN_FILE = './data/in/Datos Proyecto 3/Abril_wgs84.csv';
+// const OUT_FILE = './data/s1/Abril_wgs84.json';
 
 const IN_DIR = './data/in/Datos Proyecto 3/';
 const OUT_DIR = './data/s1/infractions/';
@@ -27,18 +27,22 @@ const IN_FILES = [
   'September_wgs84.csv'
 ];
 
+
+// processFile(IN_FILE, OUT_FILE);
+
+
 _.map(IN_FILES, function(file){
   processFile(IN_DIR + file, OUT_DIR + file.split('\.')[0] + '.json');
 });
 
 function processFile(in_file, out_file){
   var file = fs.createReadStream(in_file);
-  var out = fs.createWriteStream(out_file)
+  var out = fs.createWriteStream(out_file);
 
   var progress = 0;
   var t0 = new Date().getTime();
 
-  var firstLine = false;
+  var firstLine = true;
 
   var inFirstRow = true;
   var firstRow = null;

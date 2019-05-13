@@ -9,7 +9,7 @@ const stream = require('stream');
 var pass = new stream.PassThrough({objectMode: true});
 
 const IN_FILE = './data/in/XMLs/map.xml';
-const OUT_FILE = './data/s1/mapWays.xml';
+const OUT_FILE = './data/s1/mapWays.json';
 
 // const IN_FILE = './data/in/XMLs/Central-WashingtonDC-OpenStreetMap.xml';
 // const OUT_FILE = './data/out/XMLs/CentralMapVertices.json';
@@ -25,7 +25,7 @@ var t0 = new Date().getTime();
 
 var saxStream = sax.createStream(true, {});
 
-var firstLine = false;
+var firstLine = true;
 
 var openWay = false;
 var wayData = null;

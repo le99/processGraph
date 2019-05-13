@@ -25,7 +25,7 @@ var out = fs.createWriteStream(OUT_FILE);
 
 var saxStream = sax.createStream(true, {});
 
-var firstLine = false;
+var firstLine = true;
 var openNode = false;
 saxStream.on("error", function (e) {
   // unhandled errors will throw, since this is a proper node
