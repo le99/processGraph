@@ -37,7 +37,7 @@ async.series(_.map([
   });
 
 
-  var res = _.mapObject(graph, function(v, k){
+  var res = _.map(graph, function(v, k){
     var c = _.clone(v);
     c.infractions = [];
 
