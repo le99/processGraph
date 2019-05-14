@@ -76,8 +76,8 @@ function processFile(in_file, out_file){
       // console.log(csvrow);
       out.write(JSON.stringify({
         id: csvrow[firstRow['OBJECTID']],
-        lat: csvrow[firstRow['LAT']],
-        lon: csvrow[firstRow['LONG']],
+        lat: parseFloat(csvrow[firstRow['LAT']].replace(',','.')),
+        lon: parseFloat(csvrow[firstRow['LONG']].replace(',','.')),
       }));
 
       progress++;

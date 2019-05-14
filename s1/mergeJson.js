@@ -30,9 +30,12 @@ var out = fs.createWriteStream('./data/s1/infractions.json');
 
 es.merge(
   _.map(IN_FILES, function(f){
-    return fs.createReadStream(IN_DIR + f);
+    return fs.createReadStream(IN_DIR + f)
+      .pipe(es.split());
   })
-).pipe(out)
+)
+.pipe(es.join('\r\n'))
+.pipe(out)
 .on('error', function(err){
   console.log(err);
 })

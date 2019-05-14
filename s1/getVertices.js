@@ -9,27 +9,24 @@ const stream = require('stream');
 var pass = new stream.PassThrough({objectMode: true});
 
 const IN_FILE = './data/in/XMLs/map.xml';
-const OUT_FILE = './data/s1/mapWays.json';
+const OUT_FILE = './data/s1/mapVertices.json';
 
 // const IN_FILE = './data/in/XMLs/Central-WashingtonDC-OpenStreetMap.xml';
 // const OUT_FILE = './data/out/XMLs/CentralMapVertices.json';
 
 // const IN_FILE = './data/exampleMap.xml';
-// const OUT_FILE = './data/out/exampleMap.json';
-
-var file = fs.createReadStream(IN_FILE);
-var out = fs.createWriteStream(OUT_FILE)
+// const OUT_FILE = './data/out/exampleMapVertices.json';
 
 var progress = 0;
 var t0 = new Date().getTime();
 
+var file = fs.createReadStream(IN_FILE);
+var out = fs.createWriteStream(OUT_FILE);
+
 var saxStream = sax.createStream(true, {});
 
 var firstLine = true;
-
-var openWay = false;
-var wayData = null;
-
+var openNode = false;
 saxStream.on("error", function (e) {
   // unhandled errors will throw, since this is a proper node
   // event emitter.
@@ -40,34 +37,25 @@ saxStream.on("error", function (e) {
 })
 saxStream.on("opentag", function (node) {
   // console.log(node);
-  if(node.name === 'way'){
-    openWay = true;
-    wayData = {nd:[], highway: false};
-  }
-  else if(node.name === 'nd' && openWay){
-    wayData.nd.push(node.attributes.ref);
-  }
-  else if(node.name === 'tag' && openWay){
-    if(node.attributes.k === 'highway'){
-      wayData.highway = true;
+  if(node.name === 'node'){
+    openNode = true;
+    if(!firstLine){
+      out.write('\r\n');
     }
+    else{
+       firstLine = false;
+     }
+    out.write(JSON.stringify({
+      id: node.attributes.id,
+      lat: parseFloat(node.attributes.lat),
+      lon: parseFloat(node.attributes.lon)
+    }));
   }
 });
 
 saxStream.on("closetag", function (node) {
-  if(node === 'way'){
-    openWay = false;
-
-    if(wayData){
-      if(!firstLine){
-        out.write('\r\n');
-      }
-      else{
-         firstLine = false;
-      }
-      out.write(JSON.stringify(wayData.nd));
-    }
-    wayData = null;
+  if(node === 'node'){
+    openNode = false;
 
     progress++;
     if(progress % 50000 === 0){
